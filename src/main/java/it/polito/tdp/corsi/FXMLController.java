@@ -5,8 +5,13 @@
 package it.polito.tdp.corsi;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.corsi.model.Corso;
+import it.polito.tdp.corsi.model.Divisione;
 import it.polito.tdp.corsi.model.Model;
+import it.polito.tdp.corsi.model.Studente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -46,21 +51,79 @@ public class FXMLController {
 
     @FXML
     void corsiPerPeriodo(ActionEvent event) {
+    	txtRisultato.clear();
+    	String periodo=txtPeriodo.getText();
+    	int p;
+    	try {
+    	p=Integer.parseInt(periodo);
+    	}
+    	catch(NumberFormatException e) {
+    		txtRisultato.setText("Inserisci valore numerico valido");
+    		return;
+    	}
+    	if(p<1 || p>2) {
+    		txtRisultato.setText("Inserisci valore numerico valido");
     	
+    	return;
+    	}
+    	List<Corso> corsi=this.model.getCorsiByPeriodo(p);
+    	for(Corso c: corsi) {
+    		txtRisultato.appendText(c+"\n");
+    	}
     }
 
     @FXML
     void numeroStudenti(ActionEvent event) {
+    	txtRisultato.clear();
+    	String periodo=txtPeriodo.getText();
+    	int p;
+    	try {
+    	p=Integer.parseInt(periodo);
+    	}
+    	catch(NumberFormatException e) {
+    		txtRisultato.setText("Inserisci valore numerico valido");
+    		return;
+    	}
+    	if(p<1 || p>2) {
+    		txtRisultato.setText("Inserisci valore numerico valido");
     	
+    	return;
+    	}
+    	List<Corso> corsi=this.model.getStudentiPerCorsoPerPeriodo(p);
+    	for(Corso c: corsi) {
+    		txtRisultato.appendText(c.toString()+" "+c.getNumIscritti()+"\n");
+    	}
     }
 
     @FXML
     void stampaDivisione(ActionEvent event) {
-
+    
+    	txtRisultato.clear();
+    	String corso= txtCorso.getText();
+    	if(corso==null || corso.equals("")) {
+    	txtRisultato.setText("Per favore inserisci un codice valido");
+    	return; 
+    	}
+    	List<Divisione> studenti=this.model.getDivisioneStudenti(corso);
+    	for(Divisione s: studenti) {
+    		txtRisultato.appendText(s.toString()+"\n");
+    	}
+    	
     }
 
     @FXML
     void stampaStudenti(ActionEvent event) {
+    	txtRisultato.clear();
+    	String corso= txtCorso.getText();
+    	if(corso==null || corso.equals("")) {
+    	txtRisultato.setText("Per favore inserisci un codice valido");
+    	return; 
+    	}
+    	List<Studente> studenti=this.model.getStudentiPerCorso(corso);
+    	for(Studente s: studenti) {
+    		txtRisultato.appendText(s.toString()+"\n");
+    	}
+    	
 
     }
 
